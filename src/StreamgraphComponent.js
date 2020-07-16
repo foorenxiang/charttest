@@ -1,20 +1,27 @@
-import React, { useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 import vsBenchmarkStats from './vsBenchmark';
 
-const svgID = (Math.floor(Math.random() * 1000000) + 1000).toString(16) + '_d3graph';
-
 export default function StreamgraphComponent(props) {
-  useEffect(() => renderChart(svgID, { ...props }));
+  const svgID = 'd3graph_' + (Math.floor(Math.random() * 1000000) + 1000).toString(16);
 
-  return (
-    <>
-      <svg id={svgID} />
-    </>
-  );
+  const d3Container = useRef(null);
+  useEffect(() => {
+    if (props.data && d3Container.current) {
+      renderChart(svgID, { ...props });
+    }
+  }, [props.data, d3Container.current]);
+
+  return <svg ref={d3Container} width={400} height={200} className="d3-component" />;
 }
 
-const renderChart = (props) => {
+// const findMax = (data, key) =>
+//   data.reduce((maxVal, sample) => (maxVal > sample[key] ? maxVal : sample[key]), -Infinity);
+
+// const findMin = (data, key) =>
+//   data.reduce((minVal, sample) => (minVal < sample[key] ? minVal : sample[key]), Infinity);
+
+const renderChart = (svgID, props) => {
   // will refactor with prop types
   const {
     graphFillColor = '#f38200',
@@ -66,6 +73,9 @@ const renderChart = (props) => {
     -Infinity
   );
 
+  // const minXScale = findMin(data, xAxisFeature);
+  // const maxXScale = findMax(data, xAxisFeature);
+
   const x = d3
     .scaleLinear()
     .domain([minXScale, maxXScale])
@@ -81,6 +91,9 @@ const renderChart = (props) => {
     -Infinity
   );
 
+  // const minDataVal = findMin(data, yAxisFeature);
+  // const maxDataVal = findMax(data, yAxisFeature);
+
   const y = d3
     .scaleLinear()
     .domain([minDataVal, maxDataVal])
@@ -93,7 +106,7 @@ const renderChart = (props) => {
     // .range(['#f38200', '#50c369']);
     .range(['#fff', graphFillColor]);
 
-  const svg = d3.select(svgID).create('svg').attr('viewBox', [0, 0, width, height]);
+  const svg = d3.select(svgID).append(d3.create('svg').attr('viewBox', [0, 0, width, height]));
 
   svg
     .append('g')
@@ -102,6 +115,4 @@ const renderChart = (props) => {
     .join('path')
     .attr('fill', ({ key }) => color(key))
     .attr('d', area);
-
-  return svg;
 };
