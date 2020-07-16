@@ -99,7 +99,11 @@ export default function StreamgraphComponent(props) {
 
       const svg = d3.select(d3Container.current);
 
-      svg.append('svg').attr('viewBox', [0, 0, width, height]);
+      svg
+        .append('svg')
+        .attr('preserveAspectRatio', 'xMinYMin meet')
+        .attr('viewBox', [0, 0, width, height])
+        .classed('svg-content', true);
 
       svg
         .append('g')
