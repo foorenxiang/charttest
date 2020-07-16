@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 import vsBenchmarkStats from './vsBenchmark';
 
+const svgID = (Math.floor(Math.random() * 1000000) + 1000).toString(16) + '_d3graph';
+
 export default function StreamgraphComponent(props) {
-  const svgID = (Math.floor(Math.random() * 1000000) + 1000).toString(16) + '_d3graph';
   useEffect(() => renderChart(svgID, { ...props }));
 
   return (
@@ -13,7 +14,7 @@ export default function StreamgraphComponent(props) {
   );
 }
 
-const renderChart = (svgID, props) => {
+const renderChart = (props) => {
   // will refactor with prop types
   const {
     graphFillColor = '#f38200',
