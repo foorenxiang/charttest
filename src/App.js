@@ -1,15 +1,16 @@
 import React from 'react';
 import './App.css';
 import StreamGraphComponent from './StreamgraphComponent';
+import vsBenchmarkStats from './vsBenchmark';
 
 function App() {
   const props = {
     graphFillColor: '#f38200',
     xAxisFeature: 'Time',
     yAxisFeaturE: 'VSBenchmark',
-    data: 'vsBenchmarkStats',
+    data: vsBenchmarkStats,
+    height: 200,
     width: 320,
-    height: 500,
   };
   return (
     <>
